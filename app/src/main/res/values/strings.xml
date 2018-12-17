@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Two Factor</string>
     <string name="test">TEST</string>
+    <string name="server_ip">Server IP Address</string>
+    <string name="autofill_hint">Enter server IP here</string>
+    <string name="send">Send</string>
 </resources>
