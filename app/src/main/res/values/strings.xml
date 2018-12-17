@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Two Factor</string>
+    <string name="test">TEST</string>
 </resources>
