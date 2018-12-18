@@ -4,4 +4,5 @@
     <string name="server_ip">Server IP Address</string>
     <string name="autofill_hint">Enter server IP here</string>
     <string name="send">Send</string>
+    <string name="test_response">IP: %1$s\nResponse: %2$s</string>
 </resources>

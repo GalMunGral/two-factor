@@ -1,7 +1,11 @@
 package edu.gatech.wenqi.twofactor
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_test.*
@@ -26,17 +30,37 @@ class TestActivity: AppCompatActivity() {
 
             uiThread {
                 Log.i("uiThread", "HERE")
-                textTestInput.text = "IP: $ipFromInput\nResponse: $s"
+                textTestInput.text = getString(R.string.test_response, ipFromInput, s)
             }
         }
 
 
         buttonSend.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, ipFromInput)
+//            val intent = Intent(Intent.ACTION_SEND).apply {
+//                type = "text/plain"
+//                putExtra(Intent.EXTRA_TEXT, ipFromInput)
+//            }
+//            startActivity(intent)
+            val intent = Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            startActivity(intent)
+            val pendingIntent = PendingIntent.getActivity(this, 0, intent,0)
+
+            var mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("TITLE")
+                .setContentText("TEST")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+
+            with(NotificationManagerCompat.from(this)) {
+                notify(123, mBuilder.build())
+            }
+
+
+
         }
     }
+
 }
