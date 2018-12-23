@@ -18,7 +18,7 @@ class TestActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
 
-        val ipFromInput: String = intent.extras.getString("ip_address")
+        val ipFromInput: String? = intent?.extras?.getString("ip_address")
 
         doAsync {
             val socket = Socket(ipFromInput, 3000)
@@ -30,7 +30,7 @@ class TestActivity: AppCompatActivity() {
 
             uiThread {
                 Log.i("uiThread", "HERE")
-                textTestInput.text = getString(R.string.test_response, ipFromInput, s)
+                textTestInput.text = getString(R.string.test_response, ipFromInput, s) ?: ""
             }
         }
 
@@ -46,7 +46,7 @@ class TestActivity: AppCompatActivity() {
             }
             val pendingIntent = PendingIntent.getActivity(this, 0, intent,0)
 
-            var mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            val mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("TITLE")
                 .setContentText("TEST")
