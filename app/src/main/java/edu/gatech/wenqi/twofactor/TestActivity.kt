@@ -34,13 +34,7 @@ class TestActivity: AppCompatActivity() {
             }
         }
 
-
         buttonSend.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_SEND).apply {
-//                type = "text/plain"
-//                putExtra(Intent.EXTRA_TEXT, ipFromInput)
-//            }
-//            startActivity(intent)
             val intent = Intent(this, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
@@ -57,10 +51,8 @@ class TestActivity: AppCompatActivity() {
             with(NotificationManagerCompat.from(this)) {
                 notify(123, mBuilder.build())
             }
-
-
-
         }
+
     }
 
 }
