@@ -50,7 +50,7 @@ class TestActivity: AppCompatActivity() {
             }
             val pendingIntent = PendingIntent.getActivity(this, 0, intent,0)
 
-            val mBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            val mBuilder = NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle("TITLE")
                 .setContentText("TEST")

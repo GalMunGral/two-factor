@@ -11,8 +11,6 @@ import android.util.Log
 import edu.gatech.wenqi.twofactor.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-const val CHANNEL_ID: String = "1"
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +34,10 @@ class MainActivity : AppCompatActivity() {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                CHANNEL_ID,
+                getString(R.string.default_notification_channel_id),
                 "name", NotificationManager.IMPORTANCE_DEFAULT).apply {
                 description = "description"
+                importance = NotificationManager.IMPORTANCE_HIGH
             }
             // Register the channel with the system
             val notificationManager: NotificationManager =
