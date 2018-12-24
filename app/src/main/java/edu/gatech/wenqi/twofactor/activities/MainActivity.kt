@@ -1,4 +1,4 @@
-package edu.gatech.wenqi.twofactor
+package edu.gatech.wenqi.twofactor.activities
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import edu.gatech.wenqi.twofactor.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 const val CHANNEL_ID: String = "1"
@@ -34,7 +35,8 @@ class MainActivity : AppCompatActivity() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID,
+            val channel = NotificationChannel(
+                CHANNEL_ID,
                 "name", NotificationManager.IMPORTANCE_DEFAULT).apply {
                 description = "description"
             }
