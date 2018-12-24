@@ -22,14 +22,16 @@
             </intent-filter>
         </activity>
 
+        <!--Test scheduling jobs-->
+        <service android:name=".services.TestJobService"
+                 android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <!--For push notifications-->
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".services.TestJobService"
-                 android:permission="android.permission.BIND_JOB_SERVICE"/>
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
             See README(https://goo.gl/l4GJaQ) for more. -->
