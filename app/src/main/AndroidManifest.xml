@@ -15,17 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".activities.TestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-            </intent-filter>
-        </activity>
-
-        <!--Test scheduling jobs-->
-        <service android:name=".services.TestJobService"
-                 android:permission="android.permission.BIND_JOB_SERVICE"/>
-
         <!--For push notifications-->
         <service android:name=".services.MyFirebaseMessagingService">
             <intent-filter>
