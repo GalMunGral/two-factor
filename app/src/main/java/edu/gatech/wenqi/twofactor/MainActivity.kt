@@ -1,8 +1,7 @@
-package edu.gatech.wenqi.twofactor.activities
+package edu.gatech.wenqi.twofactor
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -17,10 +16,7 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.JsonRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import edu.gatech.wenqi.twofactor.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.defaultSharedPreferences
 import org.json.JSONObject
@@ -28,48 +24,50 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
     private lateinit var requestQueue: RequestQueue
     private lateinit var token: String
-
+    private var registered: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         requestQueue = Volley.newRequestQueue(this)
         token = defaultSharedPreferences.getString(getString(R.string.device_token_key), "") ?: ""
+        if (token != "") {
+            registerUserToken()
+            registered = true
+        }
+
         Log.i("TestFirebase", "Read from shared preferences: $token")
 
-        with(NotificationManagerCompat.from(this)) {
-            cancel(1) // Dismiss notification (in cases there is one)
-        }
         createNotificationChannel()
 
         // Start receiving broadcasts from background services
-        LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                Log.i("TestFirebase",
-                    "Main activity received token update: ${intent?.getStringExtra(getString(R.string.device_token_key))}")
-            }
-        }, IntentFilter("UPDATE_TOKEN"));
-
-        buttonTest.setOnClickListener {
-            if (token == null) return@setOnClickListener
-            val input: String = inputTest.text.toString()
-            requestQueue.add(JsonObjectRequest(
-                Request.Method.POST,
-                "http://${getString(R.string.server_ip)}:3000/android/device-token",
-                JSONObject().apply {
-                    put("username", "retarded")
-                    put("token", token)
-                },
-                Response.Listener {
-                    Log.i("TestFirebase", "Success!")
-                },
-                Response.ErrorListener {
-                    Log.d("TestFirebase", it.toString())
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(object: BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    Log.i("TestFirebase", "Main activity received token update: ${intent?.getStringExtra(getString(R.string.device_token_key))}")
+                    if (!isRestricted) {
+                        registerUserToken()
+                    }
                 }
-            ))
-        }
+            }, IntentFilter("UPDATE_TOKEN"))
     }
 
+    private fun registerUserToken() {
+        requestQueue.add(JsonObjectRequest(
+            Request.Method.POST,
+            "http://${getString(R.string.server_ip)}:3000/android/device-token",
+            JSONObject().apply {
+                put("username", "retarded")
+                put("token", token)
+            },
+            Response.Listener {
+                Log.i("TestFirebase", "Success!")
+            },
+            Response.ErrorListener {
+                Log.d("TestFirebase", it.toString())
+            }
+        ))
+    }
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(

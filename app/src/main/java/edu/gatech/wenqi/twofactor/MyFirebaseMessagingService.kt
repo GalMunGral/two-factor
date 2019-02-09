@@ -1,16 +1,13 @@
-package edu.gatech.wenqi.twofactor.services
+package edu.gatech.wenqi.twofactor
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import edu.gatech.wenqi.twofactor.R
-import edu.gatech.wenqi.twofactor.activities.MainActivity
 import org.jetbrains.anko.defaultSharedPreferences
 
 const val TAG = "TestFirebase"
