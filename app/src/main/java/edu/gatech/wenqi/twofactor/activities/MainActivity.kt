@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -34,11 +35,14 @@ class MainActivity : AppCompatActivity() {
 
         requestQueue = Volley.newRequestQueue(this)
         token = defaultSharedPreferences.getString(getString(R.string.device_token_key), "") ?: ""
-
         Log.i("TestFirebase", "Read from shared preferences: $token")
 
+        with(NotificationManagerCompat.from(this)) {
+            cancel(1) // Dismiss notification (in cases there is one)
+        }
         createNotificationChannel()
 
+        // Start receiving broadcasts from background services
         LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 Log.i("TestFirebase",
@@ -47,13 +51,14 @@ class MainActivity : AppCompatActivity() {
         }, IntentFilter("UPDATE_TOKEN"));
 
         buttonTest.setOnClickListener {
+            if (token == null) return@setOnClickListener
             val input: String = inputTest.text.toString()
             requestQueue.add(JsonObjectRequest(
                 Request.Method.POST,
                 "http://${getString(R.string.server_ip)}:3000/android/device-token",
                 JSONObject().apply {
                     put("username", "retarded")
-                    put("token", "")
+                    put("token", token)
                 },
                 Response.Listener {
                     Log.i("TestFirebase", "Success!")
