@@ -23,7 +23,7 @@ class AuthService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action != "CONFIRM") return Service.START_STICKY
-        
+
         with(NotificationManagerCompat.from(this)) {
             cancel(1) // Dismiss notification (in cases there is one)
         }

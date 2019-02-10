@@ -24,7 +24,7 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
     private lateinit var requestQueue: RequestQueue
     private lateinit var token: String
-    private var registered: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         token = defaultSharedPreferences.getString(getString(R.string.device_token_key), "") ?: ""
         if (token != "") {
             registerUserToken()
-            registered = true
         }
 
         Log.i("TestFirebase", "Read from shared preferences: $token")
@@ -45,9 +44,7 @@ class MainActivity : AppCompatActivity() {
             .registerReceiver(object: BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
                     Log.i("TestFirebase", "Main activity received token update: ${intent?.getStringExtra(getString(R.string.device_token_key))}")
-                    if (!isRestricted) {
-                        registerUserToken()
-                    }
+                    registerUserToken()
                 }
             }, IntentFilter("UPDATE_TOKEN"))
     }
