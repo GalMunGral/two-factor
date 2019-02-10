@@ -45,6 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         val testIntent = Intent(this, AuthService::class.java).apply {
+            action = "CONFIRM"
             putExtra("session_id", sessionId.toString())
         }
         Log.i("TestFirebase", testIntent.getStringExtra(("session_id")))

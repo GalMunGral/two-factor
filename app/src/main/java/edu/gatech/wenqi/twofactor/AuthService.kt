@@ -9,20 +9,32 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import org.jetbrains.anko.defaultSharedPreferences
 import org.json.JSONObject
 
 class AuthService: Service() {
 
+    private lateinit var username: String
+
+    override fun onCreate() {
+        super.onCreate()
+        username = defaultSharedPreferences.getString("username", "retarded")!!
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action != "CONFIRM") return Service.START_STICKY
+        
         with(NotificationManagerCompat.from(this)) {
             cancel(1) // Dismiss notification (in cases there is one)
         }
         val sessionId = intent?.getStringExtra("session_id")
+        Log.d("NEWTEST", username)
         Volley.newRequestQueue(this).add(JsonObjectRequest(
             Request.Method.POST,
-            "http://${getString(R.string.server_ip)}:3000/android/confirm",
+            "http://${getString(R.string.server_ip)}:3000/confirm",
             JSONObject().apply {
                 put("sessionId", sessionId)
+                put("username", username)
             },
             Response.Listener {
                 Log.i("TestFirebase", "Success!")
