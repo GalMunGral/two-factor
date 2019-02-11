@@ -31,7 +31,7 @@ class AuthService: Service() {
         Log.d("NEWTEST", username)
         Volley.newRequestQueue(this).add(JsonObjectRequest(
             Request.Method.POST,
-            "http://${getString(R.string.server_ip)}:3000/confirm",
+            "http://${getString(R.string.server_ip)}/confirm",
             JSONObject().apply {
                 put("sessionId", sessionId)
                 put("username", username)

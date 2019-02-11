@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun registerUserToken() {
         requestQueue.add(JsonObjectRequest(
             Request.Method.POST,
-            "http://${getString(R.string.server_ip)}:3000/android/device-token",
+            "http://${getString(R.string.server_ip)}/android/device-token",
             JSONObject().apply {
                 put("username", "retarded")
                 put("token", token)
